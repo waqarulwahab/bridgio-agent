@@ -1,0 +1,38 @@
+name: Build Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: 'Build trigger (dashboard or manual)'
+        required: false
+        default: 'manual'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile --noconsole `
+            --name BridgioAgent `
+            --add-data "config.json;." `
+            --add-data "decoy;decoy" `
+            main.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BridgioAgent
+          path: dist\BridgioAgent.exe
+          retention-days: 7
