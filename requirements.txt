@@ -1,0 +1,4 @@
+websockets>=12.0
+pillow>=10.0
+pynput>=1.7
+pyinstaller>=6.0

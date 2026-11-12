@@ -1,0 +1,10 @@
+build/
+dist/
+logs/
+*.log
+__pycache__/
+*.pyc
+*.pyo
+decoy/*.pdf
+decoy/*.exe
+*.spec.bak
