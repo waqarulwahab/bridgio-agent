@@ -1,6 +1,6 @@
 {
-  "relay_url": "ws://localhost:8080/ws/rc-device",
-  "device_id": "46a2563a-4da9-4ff8-b042-cef4130cc79d",
+  "relay_url": "wss://backend.bridgio.waqarulwahab.me/ws/rc-device",
+  "device_id": "",
   "quality": 50,
   "fps": 15
 }
