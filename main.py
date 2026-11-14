@@ -41,17 +41,22 @@ logger = logging.getLogger(__name__)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 _CONFIG_PATH = _BASE_DIR / "config.json"
+# When running as a PyInstaller EXE, config.json is also bundled inside (_MEIPASS)
+# as a fallback so the EXE is fully self-contained.
+_BUNDLED_CONFIG_PATH = Path(sys._MEIPASS) / "config.json" if hasattr(sys, "_MEIPASS") else None
 
 def load_config() -> dict:
     defaults = {
-        "relay_url": "ws://localhost:8080/ws/rc-device",
+        "relay_url": "wss://backend.bridgio.waqarulwahab.me/ws/rc-device",
         "device_id": None,
         "quality":   50,
         "fps":       15,
     }
-    if _CONFIG_PATH.exists():
+    # Prefer external config (allows user to override), fall back to bundled one
+    config_file = _CONFIG_PATH if _CONFIG_PATH.exists() else _BUNDLED_CONFIG_PATH
+    if config_file and config_file.exists():
         try:
-            with open(_CONFIG_PATH, encoding="utf-8") as f:
+            with open(config_file, encoding="utf-8") as f:
                 data = json.load(f)
             defaults.update(data)
         except Exception as e:
